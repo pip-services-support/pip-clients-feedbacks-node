@@ -1,0 +1,54 @@
+{
+    "name": "pip-clients-feedbacks-node",
+    "version": "1.0.0",
+    "author": "Digital Living Software Corp. <www.digitallivingsoftware.com>",
+    "description": "Node.js client sdk for pip-services-feedbacks microservice",
+    "contributors": [
+        {
+            "name": "Sergey Seroukhov",
+            "email": "seroukhov@gmail.com"
+        }
+    ],
+    "main": "./lib/src/index.js",
+    "keywords": [
+        "pip.services", 
+        "feedbacks",
+        "microservice",
+        "client",
+        "sdk"
+    ],
+    "noAnalyze": true,
+    "repository" : {
+        "type": "git",
+        "url": "ssh://git@github.com:pip-services-support/pip-clients-feedbacks-node.git"
+    },
+    "license": "MIT",
+    "engines": {
+        "node": ">=0.6.14"
+    },
+    "private": true,
+    "scripts": {
+        "build": "tsc",
+        "watch": "tsc --watch",
+        "test": "mocha -t 10000 -R spec -u tdd --recursive ./lib/test",
+        "retest": "tsc && mocha -t 10000 -R spec -u tdd --recursive ./lib/test",
+        "benchmark": "matcha -R clean -I tdd ./lib/benchmark/run.js",
+        "rebenchmark": "tsc && matcha -R clean -I tdd ./lib/benchmark/run.js"
+    },
+    "dependencies": {
+        "lodash": "*",
+        "async": "*",
+        "pip-services-runtime-node": "*"
+    },
+    "devDependencies": {
+        "mocha": "*",
+        "chai": "*",
+        "matcha": "*",
+        "seneca": "*",
+        "restify": "*",
+        "mongoose": "*",
+        "aws-sdk": "*",
+        "pip-clients-storage-node": "git+ssh://git@github.com:pip-services/pip-clients-storage-node.git",
+        "pip-services-feedbacks": "git+ssh://git@github.com:pip-services/pip-services-feedbacks.git"
+    }
+}
