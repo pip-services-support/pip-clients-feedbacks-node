@@ -1,7 +1,7 @@
 {
     "name": "pip-clients-feedbacks-node",
     "version": "1.0.0",
-    "author": "Digital Living Software Corp. <www.digitallivingsoftware.com>",
+    "author": "Conceptual Vision Consulting LLC",
     "description": "Node.js client sdk for pip-services-feedbacks microservice",
     "contributors": [
         {
@@ -9,7 +9,8 @@
             "email": "seroukhov@gmail.com"
         }
     ],
-    "main": "./lib/src/index.js",
+    "main": "./obj/src/index.js",
+    "typings": "./obj/src/index.d.ts",
     "keywords": [
         "pip.services", 
         "feedbacks",
@@ -30,25 +31,30 @@
     "scripts": {
         "build": "tsc",
         "watch": "tsc --watch",
-        "test": "mocha -t 10000 -R spec -u tdd --recursive ./lib/test",
-        "retest": "tsc && mocha -t 10000 -R spec -u tdd --recursive ./lib/test",
-        "benchmark": "matcha -R clean -I tdd ./lib/benchmark/run.js",
-        "rebenchmark": "tsc && matcha -R clean -I tdd ./lib/benchmark/run.js"
+        "test": "mocha -t 10000 -R spec -u tdd --recursive ./obj/test",
+        "retest": "tsc && mocha -t 10000 -R spec -u tdd --recursive ./obj/test",
+        "benchmark": "matcha -R clean -I tdd ./obj/benchmark/run.js",
+        "rebenchmark": "tsc && matcha -R clean -I tdd ./obj/benchmark/run.js"
     },
     "dependencies": {
-        "lodash": "*",
-        "async": "*",
-        "pip-services-runtime-node": "*"
+        "pip-services-commons-node": "^2.0.0",
+        "pip-services-net-node": "^2.0.0",
+        "pip-services-aws-node": "^1.0.0"
     },
     "devDependencies": {
-        "mocha": "*",
+        "@types/node": "*",
+        "@types/lodash": "^4.0.0",
+        "@types/async": "^2.0.0",
+        "@types/chai": "*",
+        "@types/mocha": "*",
+        "@types/mongodb": "^2.1.38",
+        "@types/mongoose": "^4.7.4",
+        "seneca": "^3.3.0",
+        "restify": "^4.3.0",
         "chai": "*",
         "matcha": "*",
-        "seneca": "*",
-        "restify": "*",
-        "mongoose": "*",
+        "mocha": "*",
         "aws-sdk": "*",
-        "pip-clients-storage-node": "git+ssh://git@github.com:pip-services/pip-clients-storage-node.git",
-        "pip-services-feedbacks": "git+ssh://git@github.com:pip-services/pip-services-feedbacks.git"
+        "pip-services-feedbacks-node": "git+ssh://git@github.com:pip-services-support/pip-services-feedbacks-node.git"
     }
 }

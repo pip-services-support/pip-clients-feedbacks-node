@@ -1,16 +1,11 @@
 <a name="1.0.0"></a>
-### 1.0.0 (2016-06-27)
-
-#### Breaking Changes
-* **New Design** Migrated to Runtime 1.0 with new design
-
-<a name="0.0.1"></a>
-### 0.0.1 (2016-06-07)
+### 1.0.0 (2017-04-14)
 
 #### Features
-* **rest** HTTP/REST client
+* **http** HTTP/REST client
 * **seneca** Seneca client
 * **lambda** AWS lambda client
+* **direct** Direct client
 * **unit tests** Unit tests using Mocha and Matcha
 
 #### Breaking Changes

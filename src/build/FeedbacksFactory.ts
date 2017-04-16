@@ -1,17 +1,22 @@
-import { ComponentFactory } from 'pip-services-runtime-node';
-import { DefaultFactory } from 'pip-services-runtime-node';
+import { Descriptor } from 'pip-services-commons-node';
+import { Factory } from 'pip-services-commons-node';
 
-let Version1 = require('../version1');
+import { FeedbacksDirectClientV1 } from '../version1/FeedbacksDirectClientV1';
+import { FeedbacksHttpClientV1 } from '../version1/FeedbacksHttpClientV1';
+import { FeedbacksSenecaClientV1 } from '../version1/FeedbacksSenecaClientV1';
 
-export class FeedbacksFactory extends ComponentFactory {
-	public static Instance: FeedbacksFactory = new FeedbacksFactory();
+export class FeedbacksFactory extends Factory {
+	public static Descriptor: Descriptor = new Descriptor('pip-services-feedbacks', 'factory', 'default', 'default', '1.0');
+	public static DirectClientV1Descriptor = new Descriptor('pip-services-feedbacks', 'client', 'direct', 'default', '1.0');
+	public static HttpClientV1Descriptor = new Descriptor('pip-services-feedbacks', 'client', 'http', 'default', '1.0');
+	public static SenecaClientV1Descriptor = new Descriptor('pip-services-feedbacks', 'client', 'seneca', 'default', '1.0');
 	
 	constructor() {
-		super(DefaultFactory.Instance);
+		super();
 
-		this.register(Version1.FeedbacksRestClient.Descriptor, Version1.FeedbacksRestClient);
-		this.register(Version1.FeedbacksSenecaClient.Descriptor, Version1.FeedbacksSenecaClient);
-		this.register(Version1.FeedbacksLambdaClient.Descriptor, Version1.FeedbacksLambdaClient);
+		this.registerAsType(FeedbacksFactory.DirectClientV1Descriptor, FeedbacksDirectClientV1);
+		this.registerAsType(FeedbacksFactory.HttpClientV1Descriptor, FeedbacksHttpClientV1);
+		this.registerAsType(FeedbacksFactory.SenecaClientV1Descriptor, FeedbacksSenecaClientV1);
 	}
 	
 }

@@ -6,19 +6,19 @@ and provides high-level API to access the microservice for simple and productive
 
 * [Installation](#install)
 * [Getting started](#get_started)
-* [Feedback class](#class1)
-* [FeedbackPage class](#class2)
-* [IFeedbacksClient interface](#interface)
-    - [init()](#operation1)
-    - [open()](#operation2)
-    - [close()](#operation3)
-    - [getFeedbacks()](#operation4)
-    - [getUsetById()](#operation5)
-    - [sendFeedback()](#operation6)
-    - [replyFeedback()](#operation7)
-    - [deleteFeedback()](#operation8)
-* [FeedbacksRestClient class](#client_rest)
-* [FeedbacksSenecaClient class](#client_seneca)
+* [DocumentReferenceV1 class](#class1)
+* [PartyReferenceV1 class](#class2)
+* [FeedbackV1 class](#class3)
+* [IFeedbacksClientV1 interface](#interface)
+    - [getFeedbacks()](#operation1)
+    - [getFeedbackById()](#operation2)
+    - [sendFeedback()](#operation3)
+    - [replyFeedback()](#operation4)
+    - [deleteFeedbackById()](#operation5)
+* [FeedbacksHttpClientV1 class](#client_http)
+* [FeedbacksSenecaClientV1 class](#client_seneca)
+* [FeedbacksLambdaClientV1 class](#client_lambda)
+* [FeedbacksDirectClientV1 class](#client_direct)
 
 ## <a name="install"></a> Installation
 
@@ -45,33 +45,28 @@ npm install
 npm update
 ```
 
-If you are using Typescript, add the following type definition where compiler can find it
-```javascript
-/// <reference path="../node_modules/pip-clients-feedbacks-node/module.d.ts" />
-```
-
 ## <a name="get_started"></a> Getting started
 
 This is a simple example on how to work with the microservice using REST client:
 
 ```javascript
 // Get Client SDK for Version 1 
-var sdk = new require('pip-clients-feedbacks-node').Version1;
+var sdk = new require('pip-clients-feedbacks-node');
 
 // Client configuration
 var config = {
-    transport: {
-        type: 'http',
+    connection: {
+        protocol: 'http',
         host: 'localhost', 
-        port: 8012
+        port: 8080
     }
 };
 
 // Create the client instance
-var client = sdk.FeedbacksRestClient(config);
+var client = sdk.FeedbacksHttpClientV1(config);
 
 // Open client connection to the microservice
-client.open(function(err) {
+client.open(null, function(err) {
     if (err) {
         console.error(err);
         return; 
@@ -81,6 +76,7 @@ client.open(function(err) {
         
     // Send feedback to support
     client.sendFeedback(
+        null,
         { 
             category: 'support',
             title: 'Please help',
@@ -102,6 +98,7 @@ client.open(function(err) {
             
             // Reply feedback
             client.replyFeedback(
+                null,
                 feedback.id,
                 'Please, be patient. We are working to fix that issue.',
                 {
@@ -119,7 +116,7 @@ client.open(function(err) {
                     console.log(feedback);
                     
                     // Close connection
-                    client.close(); 
+                    client.close(null); 
                 }
             );
         }
@@ -129,7 +126,24 @@ client.open(function(err) {
 
 ## Data types
 
-### <a name="class1"></a> Feedback class
+### <a name="class1"></a> DocumentReferenceV1 class
+
+Contains reference to a document attachment
+
+**Properties:**
+- id: string - unique feedback id
+- name: string - document (file) name
+
+### <a name="class2"></a> PartyReferenceV1 class
+
+Contains reference to sending or replying party
+
+**Properties:**
+- id: string - unique feedback id
+- name: string - party name
+- email: string - (optional) party email address (optional)
+
+### <a name="class3"></a> FeedbackV1 class
 
 Represents user's feedback. 
 
@@ -137,100 +151,54 @@ Represents user's feedback.
 - id: string - unique feedback id
 - category: string - feedback category, i.e. 'issue', 'feature', 'copyright', 'general', etc.
 - app: string - (optional) application name
-- sender: PartyReference - (optional) party who sent the feedback
-  - id: string - (optional) unique user id who sent the feedback
-  - name: string - sender full name
-  - email: string - sender email address to send reply
-- sent: Date - date and time when feedback was sent
+- sender: PartyReferenceV1 - (optional) party who sent the feedback
+- sent_time: Date - date and time when feedback was sent
 - title: string - (optional) feedback title
 - content: string - feedback textual content
 - pic_ids: string[] - (optional) array of picture block ids in storage attached to this feedback
-- docs: Reference[] - (optional) array of attached documents
-  - id: string - block id in storage attached to this feedback
-  - name: string - attached document/file name
+- docs: DocumentReferenceV1[] - (optional) array of attached documents
 - company_name: string - name of the company who reported copyright violation
 - company_addr: string - mail address of the company who reported copyright violation
 - copyright_holder: string - holder/owner of the violated copyright
 - original_location: string - original location of copyrighted material
 - copyrighted_work: string - exact description of the copyrighted material
 - unauth_loc: string - unauthorized location of the violated copyright
-- replier: PartyReference - party who replied the feedback
-  - id: string - unique user id who replied the feedback
-  - name: string - replier full name
-  - email: string - replier email address to continue communication
-- replied: Date - date and time when feedback was reply
+- replier: PartyReferenceV1 - party who replied the feedback
+- reply_time: Date - date and time when feedback was reply
 - reply: text - reply textual content
 - custom_hdr: Object - custom data summary that is always returned (in list and details)
 - custom_dat: Object - custom data details that is returned only when a single object is returned (details)
 
-### <a name="class3"></a> FeedbackPage class
+## <a name="interface"></a> IFeedbacksClientV1 interface
 
-Represents a paged result with subset of requested Feedback objects
-
-**Properties:**
-- data: Feedback[] - array of retrieved Feedback page
-- count: int - total number of objects in retrieved resultset
-
-## <a name="interface"></a> IFeedbacksClient interface
-
-If you are using Typescript, you can use IFeedbacksClient as a common interface across all client implementations. 
-If you are using plain Javascript, you shall not worry about IFeedbacksClient interface. You can just expect that
+If you are using Typescript, you can use IFeedbacksClientV1 as a common interface across all client implementations. 
+If you are using plain Javascript, you shall not worry about IFeedbacksClientV1 interface. You can just expect that
 all methods defined in this interface are implemented by all client classes.
 
 ```javascript
-interface IFeedbacksClient {
-    init(refs, callback);
-    open(callback);
-    close(callback);
-    getFeedbacks(filter, paging, callback);
-    getFeedbackById(feedbackId, callback);
-    sendFeedback(feedback, user, callback);
-    replyFeedback(feedbackId, reply, user, callback);
-    deleteFeedback(feedbackId, callback);
+interface IFeedbacksClientV1 {
+    getFeedbacks(correlationId, filter, paging, callback);
+    getFeedbackById(correlationId, feedbackId, callback);
+    sendFeedback(correlationId, feedback, user, callback);
+    replyFeedback(correlationId, feedbackId, reply, user, callback);
+    deleteFeedbackById(correlationId, feedbackId, callback);
 }
 ```
 
-### <a name="operation1"></a> init(refs)
-
-Initializes client references. This method is optional. It is used to set references 
-to logger or performance counters.
-
-**Arguments:**
-- refs: References - references to other components 
-  - log: ILog - reference to logger
-  - countes: ICounters - reference to performance counters
-- callback: (err) => void - callback function
-  - err - Error or null is no error occured
-
-### <a name="operation2"></a> open(callback)
-
-Opens connection to the microservice
-
-**Arguments:**
-- callback: (err) => void - callback function
-  - err - Error or null is no error occured
-
-### <a name="operation3"></a> close(callback)
-
-Closes connection to the microservice
-
-**Arguments:**
-- callback: (err) => void - callback function
-  - err - Error or null is no error occured
-
-### <a name="operation4"></a> getFeedbacks(filter, paging, callback)
+### <a name="operation1"></a> getFeedbacks(correlationId, filter, paging, callback)
 
 Retrieves a list of feedbacks by specified criteria
 
 **Params properties:** 
+- correlationId: string - id that uniquely identifies transaction
 - filter: object - filter parameters
   - category: string - (optional) feedback category
   - app: string - (optional) application name
   - sender_id: string - (optional) unique user id of the sender
   - sender_email: string - (optional) email address of the sender
   - replier_id: string - (optional) unique user id of the replier
-  - from: Date - (optional) start of feedback created interval
-  - to: Date - (optional) end of feedback created interval
+  - sent\_from\_time: Date - (optional) start of feedback created interval
+  - send\_to\_time: Date - (optional) end of feedback created interval
   - replied: boolean - **true** to filter replied feedbacks, **false** to filter feedbacks waiting for reply
   - search: string - string for full text search in title, content and sender name
 - paging: object - paging parameters
@@ -239,100 +207,149 @@ Retrieves a list of feedbacks by specified criteria
   - take: int - (optional) page length (max: 100). Operation returns paged result
 - callback: (err, page) => void - callback function
   - err: Error - occured error or null for success
-  - page: FeedbackPage - retrieved Feedback objects in paged format
+  - page: DataPage<FeedbackV1> - retrieved page of Feedback objects
 
-### <a name="operation5"></a> getFeedbackById(feedbackId, callback)
+### <a name="operation2"></a> getFeedbackById(correlationId, feedbackId, callback)
 
 Retrieves feedback by its unique id. 
 
 **Arguments:** 
-- feedback_id: string - unique feedback id
+- correlationId: string - id that uniquely identifies transaction
+- feedbackId: string - unique feedback id
 - callback: (err, feedback) => void - callback function
   - err: Error - occured error or null for success
-  - feedback: Feedback - retrieved Feedback object
+  - feedback: FeedbackV1 - retrieved Feedback object
 
-### <a name="operation6"></a> sendFeedback(feedback, user, callback)
+### <a name="operation3"></a> sendFeedback(correlationId, feedback, user, callback)
 
 Sends a feedback from a user.
 
 **Arguments:** 
-- feedback: Feedback - a feedback to be sent
-- user: User - feedback sender
+- correlationId: string - id that uniquely identifies transaction
+- feedback: FeedbackV1 - a feedback to be sent
+- user: PartyReferenceV1 - feedback sender
   - id: string - (optional) sender unique user id
   - name: string - full sender name
   - email: string - sender email address
 - callback: (err, feedback) => void - callback function
   - err: Error - occured error or null for success
-  - feedback: Feedback - created Feedback object
+  - feedback: FeedbackV1 - created Feedback object
  
-### <a name="operation8"></a> replyFeedback(feedbackId, reply, user, callback)
+### <a name="operation4"></a> replyFeedback(correlationId, feedbackId, reply, user, callback)
 
 Reply feedback specified by its unique id.
 
 **Arguments:** 
+- correlationId: string - id that uniquely identifies transaction
 - feedbackId: string - unique feedback id
 - reply: string - replied textual content
-- user: User - feedback replier
+- user: PartyReferenceV1 - feedback replier
   - id: string - (optional) replier unique user id
   - name: string - full replier name
   - email: string - replier email address
 - callback: (err, feedback) => void - callback function
   - err: Error - occured error or null for success
-  - feedback: Feedback - replied Feedback object
+  - feedback: FeedbackV1 - replied Feedback object
 
-### <a name="operation9"></a> deleteFeedback(feedbackId, callback)
+### <a name="operation5"></a> deleteFeedbackById(correlationId, feedbackId, callback)
 
 Deletes system feedback specified by its unique id.
 
 **Arguments:** 
+- correlationId: string - id that uniquely identifies transaction
 - feedbackId: string - unique feedback id
 - callback: (err) => void - callback function
   - err: Error - occured error or null for success
  
-## <a name="client_rest"></a> FeedbacksRestClient class
+## <a name="client_http"></a> FeedbacksHttpClientV1 class
 
-FeedbacksRestClient is a client that implements HTTP/REST protocol
+FeedbacksHttpClientV1 is a client that implements HTTP protocol
 
 ```javascript
-class FeedbacksRestClient extends RestClient implements IFeedbacksClient {
+class FeedbacksHttpClientV1 extends CommandableHttpClient implements IFeedbacksClientV1 {
     constructor(config: any);
-    init(refs, callback);
-    open(callback);
-    close(callback);
-    getFeedbacks(filter, paging, callback);
-    getFeedbackById(feedbackId, callback);
-    sendFeedback(feedback, user, callback);
-    replyFeedback(feedbackId, reply, user, callback);
-    deleteFeedback(feedbackId, callback);
+    setReferences(references);
+    open(correlationId, callback);
+    close(correlationId, callback);
+    getFeedbacks(correlationId, filter, paging, callback);
+    getFeedbackById(correlationId, feedbackId, callback);
+    sendFeedback(fcorrelationId, eedback, user, callback);
+    replyFeedback(correlationId, feedbackId, reply, user, callback);
+    deleteFeedbackById(correlationId, feedbackId, callback);
 }
 ```
 
 **Constructor config properties:** 
-- transport: object - HTTP transport configuration options
+- connection: object - HTTP transport configuration options
   - type: string - HTTP protocol - 'http' or 'https' (default is 'http')
   - host: string - IP address/hostname binding (default is '0.0.0.0')
   - port: number - HTTP port number
 
-## <a name="client_seneca"></a> FeedbacksSenecaClient class
+## <a name="client_seneca"></a> FeedbacksSenecaClientV1 class
 
-FeedbacksSenecaClient is a client that implements Seneca protocol
+FeedbacksSenecaClientV1 is a client that implements Seneca protocol
 
 ```javascript
-class FeedbacksSenecaClient extends SenecaClient implements IFeedbacksClient {
-    constructor(config: any);        
-    init(refs, callback);
-    open(callback);
-    close(callback);
-    getFeedbacks(filter, paging, callback);
-    getFeedbackById(feedbackId, callback);
-    sendFeedback(feedback, user, callback);
-    replyFeedback(feedbackId, reply, user, callback);
-    deleteFeedback(feedbackId, callback);
+class FeedbacksSenecaClientV1 extends CommandableSenecaClient implements IFeedbacksClientV1 {
+    constructor(config: any);
+    setReferences(references);
+    open(correlationId, callback);
+    close(correlationId, callback);
+    getFeedbacks(correlationId, filter, paging, callback);
+    getFeedbackById(correlationId, feedbackId, callback);
+    sendFeedback(fcorrelationId, eedback, user, callback);
+    replyFeedback(correlationId, feedbackId, reply, user, callback);
+    deleteFeedbackById(correlationId, feedbackId, callback);
 }
 ```
 
 **Constructor config properties:** 
-- transport: object - (optional) Seneca transport configuration options. See http://senecajs.org/api/ for details.
+- connection: object - (optional) Seneca transport configuration options. See http://senecajs.org/api/ for details.
   - type: string - Seneca transport type 
   - host: string - IP address/hostname binding (default is '0.0.0.0')
   - port: number - Seneca port number
+
+## <a name="client_seneca"></a> FeedbacksLambdaClientV1 class
+
+FeedbacksLambdaClientV1 is a client that connects to AWS lambda function
+
+```javascript
+class FeedbacksLambdaClientV1 extends CommandableLambdaClient implements IFeedbacksClientV1 {
+    constructor(config: any);
+    setReferences(references);
+    open(correlationId, callback);
+    close(correlationId, callback);
+    getFeedbacks(correlationId, filter, paging, callback);
+    getFeedbackById(correlationId, feedbackId, callback);
+    sendFeedback(fcorrelationId, eedback, user, callback);
+    replyFeedback(correlationId, feedbackId, reply, user, callback);
+    deleteFeedbackById(correlationId, feedbackId, callback);
+}
+```
+
+**Constructor config properties:** 
+- connection: object - AWS lambda connection options. 
+  - type: string - 'aws'
+  - arn: string - Lambda function arn
+- credential: object - AWS lambda credential options
+  - access_id: string - Amazon access id
+  - access_key: string - Amazon secret access key
+
+## <a name="client_seneca"></a> FeedbacksDirectClientV1 class
+
+FeedbacksDirectClientV1 is a client that calls controller directly from the same container.
+It can be used in monolythic deployments when multiple microservices run in the same process.
+
+```javascript
+class FeedbacksDirectClientV1 extends DirectClient implements IFeedbacksClientV1 {
+    constructor(config: any);
+    setReferences(references);
+    open(correlationId, callback);
+    close(correlationId, callback);
+    getFeedbacks(correlationId, filter, paging, callback);
+    getFeedbackById(correlationId, feedbackId, callback);
+    sendFeedback(fcorrelationId, eedback, user, callback);
+    replyFeedback(correlationId, feedbackId, reply, user, callback);
+    deleteFeedbackById(correlationId, feedbackId, callback);
+}
+```

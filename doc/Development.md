@@ -23,9 +23,6 @@ Then you need to configure node tools:
 # Install typescript compiler
 npm install typescript -g
  
-# Install typescript definitions utility
-npm install tsd -g 
-
 # Install mocha test runner
 npm install mocha -g
 ```
@@ -36,7 +33,7 @@ To work with GitHub code repository you need to install Git from: https://git-sc
 
 After your environment is ready you can check out microservice source code from the Github repository:
 ```bash
-git clone git@github.com:pip-services/pip-clients-feedbacks-node.git
+git clone git@github.com:pip-services-support/pip-clients-feedbacks-node.git
 ```
 
 Then go to the project folder and install dependent modules:
