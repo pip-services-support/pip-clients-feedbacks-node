@@ -9,7 +9,7 @@ import { DirectClient } from 'pip-services-net-node';
 import { FeedbackV1 } from './FeedbackV1';
 import { PartyReferenceV1 } from './PartyReferenceV1';
 import { IFeedbacksClientV1 } from './IFeedbacksClientV1';
-//import { IFeedbacksBusinessLogic } from 'pip-services-feedbacks-node';
+//import { IFeedbacksController } from 'pip-services-feedbacks-node';
 
 export class FeedbacksDirectClientV1 extends DirectClient<any> implements IFeedbacksClientV1 {
             

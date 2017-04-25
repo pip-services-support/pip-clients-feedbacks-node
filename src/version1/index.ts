@@ -1,4 +1,4 @@
-export { DocumentReferenceV1 } from './DocumentReferenceV1';
+export { AttachmentV1 } from './AttachmentV1';
 export { PartyReferenceV1 } from './PartyReferenceV1';
 export { FeedbackV1 } from './FeedbackV1';
 export { IFeedbacksClientV1 } from './IFeedbacksClientV1';

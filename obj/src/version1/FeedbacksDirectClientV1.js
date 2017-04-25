@@ -3,7 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const pip_services_commons_node_1 = require("pip-services-commons-node");
 const pip_services_commons_node_2 = require("pip-services-commons-node");
 const pip_services_net_node_1 = require("pip-services-net-node");
-//import { IFeedbacksBusinessLogic } from 'pip-services-feedbacks-node';
+//import { IFeedbacksController } from 'pip-services-feedbacks-node';
 class FeedbacksDirectClientV1 extends pip_services_net_node_1.DirectClient {
     constructor(config) {
         super();

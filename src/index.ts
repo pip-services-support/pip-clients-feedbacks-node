@@ -1,2 +1,2 @@
 export * from './version1';
-export { FeedbacksFactory } from './build/FeedbacksFactory';
+export { FeedbacksClientFactory } from './build/FeedbacksClientFactory';
