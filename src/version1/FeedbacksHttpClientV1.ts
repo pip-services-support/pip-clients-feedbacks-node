@@ -12,7 +12,7 @@ import { IFeedbacksClientV1 } from './IFeedbacksClientV1';
 export class FeedbacksHttpClientV1 extends CommandableHttpClient implements IFeedbacksClientV1 {
 
     constructor(config?: any) {
-        super('feedbacks');
+        super('v1/feedbacks');
 
         if (config != null)
             this.configure(ConfigParams.fromValue(config));
