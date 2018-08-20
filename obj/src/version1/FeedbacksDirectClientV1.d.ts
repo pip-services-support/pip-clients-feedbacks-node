@@ -1,7 +1,7 @@
 import { FilterParams } from 'pip-services-commons-node';
 import { PagingParams } from 'pip-services-commons-node';
 import { DataPage } from 'pip-services-commons-node';
-import { DirectClient } from 'pip-services-net-node';
+import { DirectClient } from 'pip-services-rpc-node';
 import { FeedbackV1 } from './FeedbackV1';
 import { PartyReferenceV1 } from './PartyReferenceV1';
 import { IFeedbacksClientV1 } from './IFeedbacksClientV1';

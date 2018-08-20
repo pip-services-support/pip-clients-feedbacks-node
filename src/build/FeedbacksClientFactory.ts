@@ -1,5 +1,5 @@
 import { Descriptor } from 'pip-services-commons-node';
-import { Factory } from 'pip-services-commons-node';
+import { Factory } from 'pip-services-components-node';
 
 import { FeedbacksDirectClientV1 } from '../version1/FeedbacksDirectClientV1';
 import { FeedbacksHttpClientV1 } from '../version1/FeedbacksHttpClientV1';

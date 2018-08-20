@@ -2,9 +2,9 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const pip_services_commons_node_1 = require("pip-services-commons-node");
 const pip_services_commons_node_2 = require("pip-services-commons-node");
-const pip_services_net_node_1 = require("pip-services-net-node");
+const pip_services_rpc_node_1 = require("pip-services-rpc-node");
 //import { IFeedbacksController } from 'pip-services-feedbacks-node';
-class FeedbacksDirectClientV1 extends pip_services_net_node_1.DirectClient {
+class FeedbacksDirectClientV1 extends pip_services_rpc_node_1.DirectClient {
     constructor(config) {
         super();
         this._dependencyResolver.put('controller', new pip_services_commons_node_2.Descriptor("pip-services-feedbacks", "controller", "*", "*", "*"));
