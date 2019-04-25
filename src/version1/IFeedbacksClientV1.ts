@@ -1,7 +1,6 @@
-import { FilterParams } from 'pip-services-commons-node';
-import { PagingParams } from 'pip-services-commons-node';
-import { DataPage } from 'pip-services-commons-node';
-import { IGetter } from 'pip-services-data-node';
+import { FilterParams } from 'pip-services3-commons-node';
+import { PagingParams } from 'pip-services3-commons-node';
+import { DataPage } from 'pip-services3-commons-node';
 
 import { PartyReferenceV1 } from './PartyReferenceV1';
 import { FeedbackV1 } from './FeedbackV1';

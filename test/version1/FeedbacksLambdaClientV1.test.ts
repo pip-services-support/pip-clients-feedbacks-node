@@ -1,6 +1,6 @@
 let process = require('process');
 
-import { ConfigParams } from 'pip-services-commons-node';
+import { ConfigParams } from 'pip-services3-commons-node';
 
 import { FeedbacksClientFixtureV1 } from './FeedbacksClientFixtureV1';
 import { FeedbacksLambdaClientV1 } from '../../src/version1/FeedbacksLambdaClientV1';
