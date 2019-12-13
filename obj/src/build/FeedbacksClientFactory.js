@@ -11,8 +11,8 @@ class FeedbacksClientFactory extends pip_services3_components_node_1.Factory {
         this.registerAsType(FeedbacksClientFactory.HttpClientV1Descriptor, FeedbacksHttpClientV1_1.FeedbacksHttpClientV1);
     }
 }
+exports.FeedbacksClientFactory = FeedbacksClientFactory;
 FeedbacksClientFactory.Descriptor = new pip_services3_commons_node_1.Descriptor('pip-services-feedbacks', 'factory', 'default', 'default', '1.0');
 FeedbacksClientFactory.DirectClientV1Descriptor = new pip_services3_commons_node_1.Descriptor('pip-services-feedbacks', 'client', 'direct', 'default', '1.0');
 FeedbacksClientFactory.HttpClientV1Descriptor = new pip_services3_commons_node_1.Descriptor('pip-services-feedbacks', 'client', 'http', 'default', '1.0');
-exports.FeedbacksClientFactory = FeedbacksClientFactory;
 //# sourceMappingURL=FeedbacksClientFactory.js.map
